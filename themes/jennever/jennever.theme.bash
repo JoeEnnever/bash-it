@@ -21,8 +21,15 @@ function frowny {
   echo "\$([[ \$? != 0 ]] && echo ':( ')"
 }
 
+NAME=''
+if [[ $HOSTNAME == "Foursquares-MacBook-Pro-7.local" ]]; then 
+  NAME="Laptop"
+else
+  NAME="\h"
+fi
+
 function prompt_command() {
-PS1="\n${purple}Laptop ${reset_color}in ${green}\w\n${bold_cyan}༼つ◕_◕༽つ $(ghost_dude) ${green}$(scm_prompt_info) ${red}$(frowny)${green}\$${reset_color} "
+PS1="\n${purple}${NAME} ${reset_color}in ${green}\w\n${bold_cyan}༼つ◕_◕༽つ $(ghost_dude) ${green}$(scm_prompt_info) ${red}$(frowny)${green}\$${reset_color} "
 }
 
 PROMPT_COMMAND=prompt_command;
