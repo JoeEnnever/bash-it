@@ -70,12 +70,16 @@ function scm_prompt_info {
 }
 
 function git_prompt_vars {
-  if [[ -z $(git status -uno 2> /dev/null |grep "nothing to commit") ]]; then
-    SCM_DIRTY=1
-     SCM_STATE=${GIT_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
-  else
+  status=$(git status 2> /dev/null)
+  if [[ -n $(echo $status |grep "nothing to commit, working directory clean") ]]; then
     SCM_DIRTY=0
      SCM_STATE=${GIT_THEME_PROMPT_CLEAN:-$SCM_THEME_PROMPT_CLEAN}
+  elif [[ -n $(echo $status |grep "nothing added to commit but untracked files present") ]]; then
+    SCM_DIRTY=0
+     SCM_STATE=${GIT_THEME_PROMPT_UNTRACKED:-$SCM_THEME_PROMPT_CLEAN}
+  else
+    SCM_DIRTY=1
+    SCM_STATE=${GIT_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
   fi
   SCM_PREFIX=${GIT_THEME_PROMPT_PREFIX:-$SCM_THEME_PROMPT_PREFIX}
   SCM_SUFFIX=${GIT_THEME_PROMPT_SUFFIX:-$SCM_THEME_PROMPT_SUFFIX}
